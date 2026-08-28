@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>电商实时交易大屏 · Real-time Commerce Monitor</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- 本地优先，失败回退 CDN，保证离线可运行 -->
+  <script src="vendor/echarts.min.js"></script>
+  <script>
+    if (typeof echarts === "undefined") {
+      document.write(
+        '<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"><\/script>'
+      );
+    }
+  </script>
+</head>
+<body>
+  <div class="dashboard">
+    <!-- ===== 顶栏 ===== -->
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <div class="brand-text">
+          <h1>电商实时交易大屏</h1>
+          <p id="linkStatus">Kafka · Spark · Redis · FastAPI 实时链路</p>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <div class="clock" id="clock">
+          <span class="clock-time" id="clockTime">--:--:--</span>
+          <span class="clock-date" id="clockDate">----/--/--</span>
+        </div>
+
+        <div class="range-switcher" id="rangeSwitcher" role="tablist" aria-label="时间范围">
+          <button class="range-btn" data-range="15M" role="tab">15M</button>
+          <button class="range-btn" data-range="30M" role="tab">30M</button>
+          <button class="range-btn active" data-range="1H" role="tab" aria-selected="true">1H</button>
+          <button class="range-btn" data-range="ALL" role="tab">ALL</button>
+        </div>
+
+        <button class="deploy-btn" id="refreshBtn">
+          <span class="deploy-ico">⟳</span><span class="deploy-label">刷新数据</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- ===== KPI 行 ===== -->
+    <section class="kpi-row" id="kpiRow" aria-label="核心指标"></section>
+
+    <!-- ===== 图表行 ===== -->
+    <section class="charts-row">
+      <article class="card chart-card line-card">
+        <div class="card-head">
+          <div class="card-title">
+            <span class="card-accent" style="--c:var(--accent-cyan)"></span>
+            <h2>各品类 GMV 趋势</h2>
+          </div>
+          <span class="card-tag">1 分钟滑动窗口</span>
+        </div>
+        <div class="chart" id="lineChart"></div>
+      </article>
+
+      <article class="card chart-card bar-card">
+        <div class="card-head">
+          <div class="card-title">
+            <span class="card-accent" style="--c:var(--accent-purple)"></span>
+            <h2>最新 5 分钟窗口 GMV</h2>
+          </div>
+          <span class="card-tag">5m</span>
+        </div>
+        <div class="chart" id="barChart"></div>
+      </article>
+    </section>
+
+    <!-- ===== 底部行 ===== -->
+    <section class="bottom-row">
+      <article class="card table-card">
+        <div class="card-head">
+          <div class="card-title">
+            <span class="card-accent" style="--c:var(--accent-amber)"></span>
+            <h2>实时品类成交榜</h2>
+          </div>
+          <span class="card-tag">最新窗口 · TOP 5</span>
+        </div>
+        <div class="rank-table" id="rankTable"></div>
+      </article>
+
+      <article class="card log-card">
+        <div class="card-head">
+          <div class="card-title">
+            <span class="card-accent" style="--c:var(--accent-green)"></span>
+            <h2>实时事件流</h2>
+          </div>
+          <span class="live-badge"><span class="live-dot"></span>LIVE</span>
+        </div>
+        <div class="event-stream" id="eventStream"></div>
+      </article>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

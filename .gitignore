@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.venv/
+venv/
+venv_win/
+
+# 环境配置
+.env
+*.log
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
+
+# 临时文件
+*.tmp
+*.bak
+
+# checkpoint（Spark Structured Streaming 运行时生成）
+checkpoint/
+
+# 内部文档（不传GitHub）
+*操作文档.md
+*操作手册.md
+*面试问答手册.md
+Code-Wiki.md
+web/README.md
